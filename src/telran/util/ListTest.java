@@ -57,7 +57,8 @@ String initialStrings[] = {"name1", "name2"};
 		assertEquals(4, numbers.size());
 		assertEquals(30, numbers.get(2));
 //		test allocate
-		assertTrue(numbers.add(1, 15));
+		
+	
 
 	}
 	
@@ -66,7 +67,14 @@ String initialStrings[] = {"name1", "name2"};
 		assertEquals(40, numbers.remove(2));
 		assertEquals(2, numbers.size());
 		assertNull(numbers.remove(10));
-		
+	
+	}
+	@Test
+	void testRemove2() {
+		numbers.add(100);
+		assertEquals(100, numbers.remove(3));
+		assertEquals(3, numbers.size());
+
 	}
 
 }
