@@ -8,8 +8,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class ListTest {
+	
 private List<Integer> numbers;
 private List<String> strings;
+
 Integer initialNumbers[] = {10, 20, 40};
 String initialStrings[] = {"name1", "name2"};
 
@@ -18,6 +20,7 @@ Predicate<Integer> greater25Predicate = new GreaterNumberPredicate(25);
 Predicate<Integer> multipleOf10Predicate = new NumberMultipleOfPredicate(10);
 Predicate<String> predicateName = new StartWithPredicate("name");
 Predicate<String> predicateMain = new StartWithPredicate("main");
+
 
 	@BeforeEach
 	void setUp() throws Exception {
@@ -40,6 +43,11 @@ Predicate<String> predicateMain = new StartWithPredicate("main");
 			res.add(initialNumbers[i]);
 		}
 		return res;
+	}
+	
+	@Test
+	void testAdd() {
+	assertEquals(initialNumbers.length, numbers.size());
 	}
 
 	@Test
@@ -193,6 +201,9 @@ Predicate<String> predicateMain = new StartWithPredicate("main");
 			res[i] = list.get(i);
 		}
 		return res;
+
 	}
 
+
 }
+
