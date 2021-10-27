@@ -4,8 +4,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.function.Predicate;
 
-import javax.management.modelmbean.ModelMBeanNotificationBroadcaster;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -14,6 +12,13 @@ private List<Integer> numbers;
 private List<String> strings;
 Integer initialNumbers[] = {10, 20, 40};
 String initialStrings[] = {"name1", "name2"};
+
+Predicate<Integer> greater100Predicate = new GreaterNumberPredicate(100);
+Predicate<Integer> greater25Predicate = new GreaterNumberPredicate(25);
+Predicate<Integer> multipleOf10Predicate = new NumberMultipleOfPredicate(10);
+Predicate<String> predicateName = new StartWithPredicate("name");
+Predicate<String> predicateMain = new StartWithPredicate("main");
+
 	@BeforeEach
 	void setUp() throws Exception {
 		numbers = getInitialNumbers();
@@ -44,8 +49,6 @@ String initialStrings[] = {"name1", "name2"};
 		assertNull(numbers.get(-1));
 		assertNull(numbers.get(3));
 		
-
-
 	}
 	@Test
 	void testAddAtIndex() {
@@ -92,8 +95,6 @@ String initialStrings[] = {"name1", "name2"};
 	}
 	@Test
 	void testContainsStrings() {
-		
-		
 		strings.add("Hello");
 		String pattern = new String("Hello");
 		assertTrue(strings.contains(pattern));
@@ -112,21 +113,68 @@ String initialStrings[] = {"name1", "name2"};
 	}
 	@Test
 	void containsPredicateNumbersTest() {
-		Predicate<Integer> predicate100 = new GreaterNumberPredicate(100);
-		Predicate<Integer> predicate25 = new GreaterNumberPredicate(25);
-		assertFalse(numbers.contains(predicate100));
-		assertTrue(numbers.contains(predicate25));
+		assertFalse(numbers.contains(greater100Predicate));
+		assertTrue(numbers.contains(greater25Predicate));
 		
 	}
 	@Test
 	void containsPredicateStringsTest() {
-		Predicate<String> predicateName = new StartWithPredicate("name");
-		Predicate<String> predicateMain = new StartWithPredicate("main");
 		assertFalse(strings.contains(predicateMain));
 		assertTrue(strings.contains(predicateName));
-		
+			
+	}
+	
+	@Test
+	void indexOf() {
+		assertEquals(0, numbers.indexOf(10));
+		assertEquals(1, numbers.indexOf(20));
+		assertEquals(2, numbers.indexOf(40));
+		numbers.add(10);
+		assertEquals(0, numbers.indexOf(10));
+		numbers.add(2, 20);
+		assertEquals(1, numbers.indexOf(20));
+		assertEquals(-1, numbers.indexOf(25));
+	}
+	
+	@Test
+	void lastIndexOf() {
+		numbers.add(10);
+		assertEquals(3, numbers.lastIndexOf(10));
+		numbers.add(0, 20);
+		assertEquals(2, numbers.lastIndexOf(20));
+		assertEquals(3, numbers.lastIndexOf(40));
+		assertEquals(-1, numbers.lastIndexOf(25));
+	}
+	
+	@Test
+	void indexOfPredicate() {
+		assertEquals(0, numbers.indexOf(multipleOf10Predicate));
+		numbers.add(0, 25);
+		assertEquals(1, numbers.indexOf(multipleOf10Predicate));
+		assertEquals(-1, numbers.indexOf(greater100Predicate));
+	}
+	
+	@Test
+	void lastIndexOfPredicate(){
+		assertEquals(2, numbers.lastIndexOf(multipleOf10Predicate));
+		numbers.add(50);
+		assertEquals(3, numbers.lastIndexOf(greater25Predicate));
+		assertEquals(-1, numbers.lastIndexOf(greater100Predicate));
+	}
+	
+	@Test
+	void removePredicate() {
+		assertFalse(numbers.removeIf(greater100Predicate));
+		numbers.add(25);
+		assertTrue(numbers.removeIf(multipleOf10Predicate));
+		assertEquals(1, numbers.size());
+		numbers.add(30);
+		assertTrue(numbers.removeIf(greater25Predicate));
+		assertEquals(25, numbers.get(0));
 		
 	}
+	
+	
 
 	@SuppressWarnings("unchecked")
 	private <T> T[] getArrayFromList(List<T> list) {
