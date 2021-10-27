@@ -174,7 +174,15 @@ Predicate<String> predicateMain = new StartWithPredicate("main");
 		
 	}
 	
-	
+	@Test
+	void removePredicateString() {
+		assertTrue(strings.removeIf(predicateName));
+		assertEquals(0, strings.size());
+		strings.add("hello");
+		assertFalse(strings.removeIf(predicateMain));
+		
+		
+	}
 
 	@SuppressWarnings("unchecked")
 	private <T> T[] getArrayFromList(List<T> list) {
