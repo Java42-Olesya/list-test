@@ -20,7 +20,7 @@ String initialStrings[] = {"name1", "name2"};
 		numbers = getInitialNumbers();
 		strings = getInitialStrings();
 	}
-
+ 
 	private List<String> getInitialStrings() {
 		List<String> res = new ArrayList<>();
 		for (int i = 0; i < initialStrings.length; i++) {
@@ -93,8 +93,6 @@ String initialStrings[] = {"name1", "name2"};
 	}
 	@Test
 	void testContainsStrings() {
-		
-		
 		strings.add("Hello");
 		String pattern = new String("Hello");
 		assertTrue(strings.contains(pattern));
@@ -196,6 +194,34 @@ String initialStrings[] = {"name1", "name2"};
 	void removeAllSame() {
 		assertTrue(numbers.removeAll(numbers));
 		assertArrayEquals(new Integer[0], getArrayFromList(numbers));
+	}
+	
+	@Test
+	void removePatternTest() {
+		Integer expected10[] = {20, 40};
+		Integer expected40[] = {20};
+		assertNull(numbers.remove(25));
+		Integer pattern10 = 10;
+		Integer pattern40 = 40;
+		assertEquals(10, numbers.remove(pattern10));
+		assertArrayEquals(expected10, getArrayFromList(numbers));
+		assertEquals(40, numbers.remove(pattern40));
+		assertArrayEquals(expected40, getArrayFromList(numbers));
+	}
+	
+	@Test
+	void retainAllTest() {
+		assertFalse(numbers.retainAll(numbers));
+		numbers.add(40);
+		numbers.add(15);
+		numbers.add(25);
+		List<Integer> otherNumbers = new ArrayList<>();
+		otherNumbers.add(15);
+		otherNumbers.add(25);
+		Integer expected[] = {15, 25};
+		assertTrue(numbers.retainAll(otherNumbers));
+		assertArrayEquals(expected, getArrayFromList(numbers));
+		assertFalse(numbers.retainAll(otherNumbers));
 	}
 
 }
