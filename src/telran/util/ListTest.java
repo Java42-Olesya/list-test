@@ -2,10 +2,7 @@ package telran.util;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.Arrays;
 import java.util.function.Predicate;
-
-import javax.management.modelmbean.ModelMBeanNotificationBroadcaster;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -222,6 +219,45 @@ String initialStrings[] = {"name1", "name2"};
 		assertTrue(numbers.retainAll(otherNumbers));
 		assertArrayEquals(expected, getArrayFromList(numbers));
 		assertFalse(numbers.retainAll(otherNumbers));
+	}
+	
+	@Test
+	void sortNaturalOrderTest() {
+		Integer expected[] = {5, 10, 20, 25, 40};
+		numbers.add(5);
+		numbers.add(25);
+		numbers.sort();
+		assertArrayEquals(expected, getArrayFromList(numbers));
+	}
+	
+	@Test
+	void sortComparatorTest() {
+		Integer expected[] = {40, 25, 20, 10, 5};
+		numbers.add(5);
+		numbers.add(25);
+		numbers.sort(new NumberDescComparator());
+		assertArrayEquals(expected, getArrayFromList(numbers));
+		
+	}
+	
+	@Test
+	void sortStringNaturalOrder() {
+		strings.add("yes");
+		strings.add("javascript");
+		String[]expected = {"javascript", "name1", "name2", "yes"};
+		strings.sort();
+		assertArrayEquals(expected, getArrayFromList(strings));
+		
+	}
+	
+	@Test
+	void sortStringComparator() {
+		strings.add("Yes");
+		strings.add("JavaScript");
+		String[]expected = {"Yes", "name1", "name2", "JavaScript"};
+		strings.sort(new StringComparator());
+		assertArrayEquals(expected, getArrayFromList(strings));
+		
 	}
 
 }
