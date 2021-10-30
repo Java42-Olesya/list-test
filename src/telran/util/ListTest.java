@@ -226,8 +226,9 @@ Predicate<String> predicateMain = new StartWithPredicate("main");
 	
 	@Test
 	void removePatternTest() {
-		Integer expected10[] = {20, 40};
-		Integer expected40[] = {20};
+		numbers.add(10);
+		Integer expected10[] = {20, 40, 10};
+		Integer expected40[] = {20, 10};
 		assertNull(numbers.remove(25));
 		Integer pattern10 = 10;
 		Integer pattern40 = 40;
