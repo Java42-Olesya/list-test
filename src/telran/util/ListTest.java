@@ -133,44 +133,6 @@ Predicate<String> predicateMain = new StartWithPredicate("main");
 	}
 	
 	@Test
-	void indexOf() {
-		assertEquals(0, numbers.indexOf(10));
-		assertEquals(1, numbers.indexOf(20));
-		assertEquals(2, numbers.indexOf(40));
-		numbers.add(10);
-		assertEquals(0, numbers.indexOf(10));
-		numbers.add(2, 20);
-		assertEquals(1, numbers.indexOf(20));
-		assertEquals(-1, numbers.indexOf(25));
-	}
-	
-	@Test
-	void lastIndexOf() {
-		numbers.add(10);
-		assertEquals(3, numbers.lastIndexOf(10));
-		numbers.add(0, 20);
-		assertEquals(2, numbers.lastIndexOf(20));
-		assertEquals(3, numbers.lastIndexOf(40));
-		assertEquals(-1, numbers.lastIndexOf(25));
-	}
-	
-	@Test
-	void indexOfPredicate() {
-		assertEquals(0, numbers.indexOf(multipleOf10Predicate));
-		numbers.add(0, 25);
-		assertEquals(1, numbers.indexOf(multipleOf10Predicate));
-		assertEquals(-1, numbers.indexOf(greater100Predicate));
-	}
-	
-	@Test
-	void lastIndexOfPredicate(){
-		assertEquals(2, numbers.lastIndexOf(multipleOf10Predicate));
-		numbers.add(50);
-		assertEquals(3, numbers.lastIndexOf(greater25Predicate));
-		assertEquals(-1, numbers.lastIndexOf(greater100Predicate));
-	}
-	
-	@Test
 	void removePredicate() {
 		assertFalse(numbers.removeIf(greater100Predicate));
 		numbers.add(25);
@@ -231,6 +193,7 @@ Predicate<String> predicateMain = new StartWithPredicate("main");
 		assertEquals(2, numbers.lastIndexOf(new GreaterNumberPredicate(5)));
 		assertEquals(-1, numbers.lastIndexOf(new GreaterNumberPredicate(45)));
 	}
+
 	@Test
 	void removeIfTest() {
 		Integer expected[] = {10, 20};
@@ -241,8 +204,7 @@ Predicate<String> predicateMain = new StartWithPredicate("main");
 		assertArrayEquals(expected, getArrayFromList(numbers));
 		assertTrue(numbers.removeIf(new GreaterNumberPredicate(0)));
 		assertArrayEquals(expectedEmpty, getArrayFromList(numbers));
-		
-		
+			
 		
 	}
 	@Test
