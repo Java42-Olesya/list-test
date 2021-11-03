@@ -17,7 +17,8 @@ String initialStrings[] = {"name1", "name2"};
 	@BeforeEach
 	void setUp() throws Exception {
 		numbers = getInitialNumbers();
-		strings = getInitialStrings();
+		strings = getInitialStrings(); 
+		
 	}
 
 	private List<String> getInitialStrings() {
@@ -65,14 +66,20 @@ String initialStrings[] = {"name1", "name2"};
 	@Test
 	void testRemove() {
 		Integer expected0[] = {20, 40};
-		Integer expected1[] = {20};
+		Integer expected1[] = {20, 15};
+		Integer expected2[] = {20};
+		Integer expectedEmpty[] = {};
 		assertNull(numbers.remove(3));
 		assertNull(numbers.remove(-1));
 		assertEquals(10, numbers.remove(0));
 		assertArrayEquals(expected0, getArrayFromList(numbers));
+		numbers.add(15);
 		assertEquals(40, numbers.remove(1));
 		assertArrayEquals(expected1, getArrayFromList(numbers));
-		
+		assertEquals(15, numbers.remove(1));
+		assertArrayEquals(expected2, getArrayFromList(numbers));
+		numbers.remove(0);
+		assertArrayEquals(expectedEmpty, getArrayFromList(numbers));
 	}
 	@Test 
 	void testSize() {
