@@ -10,7 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class ListTest {
-private static final int N_NUMBERS_PERFORMANCE = 1_000_0000;
+private static final int N_NUMBERS_PERFORMANCE = 10_000_000;
 private List<Integer> numbers;
 private List<String> strings;
 Integer initialNumbers[] = {10, 20, 40};
@@ -23,7 +23,7 @@ String initialStrings[] = {"name1", "name2"};
 	}
 
 	private List<String> getInitialStrings() {
-		//List<String> res = new ArrayList<>();
+//		List<String> res = new ArrayList<>();
 		List<String> res = new LinkedList<>();
 		for (int i = 0; i < initialStrings.length; i++) {
 			res.add(initialStrings[i]);
@@ -33,8 +33,8 @@ String initialStrings[] = {"name1", "name2"};
 
 	private List<Integer> getInitialNumbers() {
 		
-		List<Integer> res = new ArrayList<>(1);
-		//List<Integer> res = new LinkedList<>();
+//		List<Integer> res = new ArrayList<>(1);
+		List<Integer> res = new LinkedList<>();
 		for (int i = 0; i < initialNumbers.length; i++) {
 			res.add(initialNumbers[i]);
 		}
@@ -115,8 +115,6 @@ String initialStrings[] = {"name1", "name2"};
 	}
 	@Test
 	void testContainsStrings() {
-		
-		
 		strings.add("Hello");
 		String pattern = new String("Hello");
 		assertTrue(strings.contains(pattern));
@@ -126,8 +124,8 @@ String initialStrings[] = {"name1", "name2"};
 	void testContainsPersons() {
 		Person prs = new Person(123, "Moshe");
 		Person prs2 = new Person(124, "Vasya");
-//		List<Person> persons = new ArrayList<>();
-		List<Person> persons = new LinkedList<>();
+		List<Person> persons = new ArrayList<>();
+//		List<Person> persons = new LinkedList<>();
 		persons.add(prs);
 		persons.add(prs2);
 		assertTrue(persons.contains(new Person(124, "Vasya")));
@@ -196,8 +194,8 @@ String initialStrings[] = {"name1", "name2"};
 		Integer expectedEmpty[] = {};
 		Predicate<Integer> greater25 = new GreaterNumberPredicate(25);
 		assertTrue(numbers.removeIf(greater25));
-		assertFalse(numbers.removeIf(greater25));
 		assertArrayEquals(expected, getArrayFromList(numbers));
+		assertFalse(numbers.removeIf(greater25));
 		assertTrue(numbers.removeIf(new GreaterNumberPredicate(0)));
 		assertArrayEquals(expectedEmpty, getArrayFromList(numbers));
 		
@@ -214,11 +212,13 @@ String initialStrings[] = {"name1", "name2"};
 		Integer expected[] = {10};
 		assertArrayEquals(expected, getArrayFromList(numbers));
 		assertFalse(numbers.removeAll(otherNumbers));
+		
 	}
 	@Test
 	void removeAllSame() {
 		assertTrue(numbers.removeAll(numbers));
-		assertArrayEquals(new Integer[0], getArrayFromList(numbers));
+		Integer expectedEmpty[] = {};
+		assertArrayEquals(expectedEmpty, getArrayFromList(numbers));
 	}
 	@Test
 	void retainAllTest() {
@@ -268,7 +268,7 @@ String initialStrings[] = {"name1", "name2"};
 	}
 	@Test
 	void removeIfPerformanceTest() {
-		//List<Integer> list = new LinkedList<>();
+//		List<Integer> list = new LinkedList<>();
 		List<Integer> list = new ArrayList<>();
 		fillListPerformance(list);
 		Predicate<Integer> divider4Predicate = new Divider4Predicate();
@@ -282,6 +282,17 @@ String initialStrings[] = {"name1", "name2"};
 			list.add((int)(Math.random() * Integer.MAX_VALUE));
 		}
 		
+	}
+	@Test
+	void clearTest() {
+		Integer expectedEmpty[] = {};
+		numbers.clear();
+		assertEquals(0, numbers.size());
+		assertArrayEquals(expectedEmpty, getArrayFromList(numbers));
+		numbers.add(25);
+		numbers.clear();
+		assertEquals(0, numbers.size());
+		assertArrayEquals(expectedEmpty, getArrayFromList(numbers));
 	}
 
 }
