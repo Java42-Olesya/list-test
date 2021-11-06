@@ -10,6 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class ListTest {
+private static final int N_NUMBERS_PERFORMANCE = 1_000_0000;
 private List<Integer> numbers;
 private List<String> strings;
 Integer initialNumbers[] = {10, 20, 40};
@@ -32,12 +33,25 @@ String initialStrings[] = {"name1", "name2"};
 
 	private List<Integer> getInitialNumbers() {
 		
-		//List<Integer> res = new ArrayList<>(1);
-		List<Integer> res = new LinkedList<>();
+		List<Integer> res = new ArrayList<>(1);
+		//List<Integer> res = new LinkedList<>();
 		for (int i = 0; i < initialNumbers.length; i++) {
 			res.add(initialNumbers[i]);
 		}
 		return res;
+	}
+	@Test
+	void sortedSearchExist() {
+		assertEquals(0, numbers.sortedSearch(10));
+		assertEquals(1, numbers.sortedSearch(20));
+		assertEquals(2, numbers.sortedSearch(40));
+	}
+	@Test
+	void sortedSearchNotExist() {
+		assertEquals(-1, numbers.sortedSearch(5));
+		assertEquals(-2, numbers.sortedSearch(15));
+		assertEquals(-3, numbers.sortedSearch(25));
+		assertEquals(-4, numbers.sortedSearch(45));
 	}
 
 	@Test
@@ -251,6 +265,23 @@ String initialStrings[] = {"name1", "name2"};
 		assertArrayEquals(expectedReverse, getArrayFromList(numbers));
 		numbers.sort(new ProximityNumberComparator(23));
 		assertArrayEquals(expectedProximity23, getArrayFromList(numbers));
+	}
+	@Test
+	void removeIfPerformanceTest() {
+		//List<Integer> list = new LinkedList<>();
+		List<Integer> list = new ArrayList<>();
+		fillListPerformance(list);
+		Predicate<Integer> divider4Predicate = new Divider4Predicate();
+		list.removeIf(divider4Predicate);
+		assertEquals(-1, list.indexOf(divider4Predicate));
+		
+	}
+
+	private void fillListPerformance(List<Integer> list) {
+		for (int i = 0; i < N_NUMBERS_PERFORMANCE ; i++) {
+			list.add((int)(Math.random() * Integer.MAX_VALUE));
+		}
+		
 	}
 
 }
